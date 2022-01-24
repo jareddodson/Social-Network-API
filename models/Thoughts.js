@@ -1,19 +1,14 @@
 const { Schema, model, Types } = require('mongoose');
 
-const ReplySchema = new Schema(
+const ThoughtsSchema = new Schema(
     {
-        replyId: {
-            type: Schema.Types.ObjectId,
-            default: () => new Types.ObjectId()
-        },
-        replyBody: {
+        thoughtText: {
             type: String,
             required: true
         },
-        writtenBy: {
+        username: {
             type: String,
-            required: true,
-            trim: true
+            required: true
         },
         createdAt: {
             type: Date,
@@ -28,13 +23,13 @@ const ReplySchema = new Schema(
     }
 );
 
-const ThoughtsSchema = new Schema(
+const ReactionSchema = new Schema(
     {
-      writtenBy: {
+      reactionBody: {
         type: String,
         required: true
       },
-      commentBody: {
+      username: {
         type: String,
         required: true
       },
@@ -43,8 +38,6 @@ const ThoughtsSchema = new Schema(
         default: Date.now,
         get: createdAtVal => dateFormat(createdAtVal)
       },
-      // use ReplySchema to validate data for a reply
-      replies: [ReplySchema]
     },
     {
       toJSON: {
@@ -60,5 +53,6 @@ ThoughtsSchema.virtual('replyCount').get(function() {
 });
 
 const Thoughts = model('Thoughts', ThoughtsSchema);
+const Reaction = model('Reaction', ReactionSchema);
 
 module.exports = Thoughts;
